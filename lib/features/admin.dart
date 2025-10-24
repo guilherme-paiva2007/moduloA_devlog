@@ -49,6 +49,17 @@ final class AdminUpdate extends ModelUpdate<Admin> {
 }
 
 final class AdminService extends Service<Admin> {
+  Future<void> remove(Id id) async {
+    try {
+      await Supabase.instance.client
+        .from("admins")
+        .delete()
+        .eq("auth", id.toString());
+      Admin.repository.remove(Admin.repository.get(id)!);
+    } catch (err) {
+      // log ou ignore
+    }
+  }
   Future<Result<List<Admin>, Warning>> list() async {
     try {
       final query = await Supabase.instance.client

@@ -126,10 +126,15 @@ final class ActiveService extends Service<Active> {
         .from("actives")
         .select();
       final actives = await Future.wait((query as List).map((data) async {
-        final responsibleResult = await Responsible.service.get(PartId([data['responsible_id'] as String]));
-        final responsible = responsibleResult is Success ? responsibleResult.result : Responsible(PartId([data['responsible_id'] as String]), name: '', sector: '');
+        final responsibleResult = await Responsible.service.get(PartId([data['responsible'] as int]));
+        if (responsibleResult is Failure) {
+          throw Exception("Responsável não encontrado");
+        }
+        final responsible = responsibleResult.result;
+        // final responsible = responsibleResult is Success ? responsibleResult.result : Responsible(PartId([data['responsible'] as int]), name: '', sector: '');
+        print(data);
         return Active(
-          PartId([data['id'] as String]),
+          PartId([data['id'] as int]),
           name: data['name'] as String,
           description: data['description'] as String?,
           category: data['category'] as String,
@@ -141,7 +146,8 @@ final class ActiveService extends Service<Active> {
       }));
       return Success(actives);
     } catch (err) {
-  return Failure(Warning(ActiveWarning.notFound, err.toString()));
+      print(err);
+      return Failure(Warning(ActiveWarning.notFound, err.toString()));
     }
   }
   
@@ -164,11 +170,11 @@ final class ActiveService extends Service<Active> {
           'value': value,
           'acquisition_date': acquisitionDate.toIso8601String(),
           'serial_number': serialNumber,
-          'responsible_id': responsible.$id.toString()
+          'responsible': responsible.$id.toString()
         })
         .select("id")
         .single();
-      final id = response['id'] as String;
+      final id = response['id'] as int;
       final active = Active(
         PartId([id]),
         name: name,
@@ -182,6 +188,7 @@ final class ActiveService extends Service<Active> {
       addInRepositories(active);
       return Success(active);
     } catch (err) {
+      print(err);
       return Failure(Warning(ActiveWarning.registerError, err.toString()));
     }
   }
@@ -192,9 +199,9 @@ final class ActiveService extends Service<Active> {
         .from("actives")
         .delete()
         .eq("id", id.toString());
-      for (var repo in repositories) {
-        repo.remove(repo.get(id)!);
-      }
+      Active.repository.remove(
+        Active.repository.get(id)!
+      );
     } catch (err) {
       // log ou ignore
     }

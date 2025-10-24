@@ -13,7 +13,7 @@ class ResponsiblesList extends StatefulWidget {
 }
 
 class _ResponsiblesListState extends State<ResponsiblesList> {
-  late final Future<Result<List<Responsible>, Warning>> responsibles;
+  late Future<Result<List<Responsible>, Warning>> responsibles;
   
   @override
   void initState() {
@@ -69,6 +69,15 @@ class _ResponsiblesListState extends State<ResponsiblesList> {
                     return ListTile(
                       title: Text(responsible.name),
                       subtitle: Text(responsible.description ?? ""),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          await Responsible.service.remove(responsible.$id);
+                          setState(() {
+                            this.responsibles = Responsible.service.list();
+                          });
+                        },
+                      ),
                     );
                   },
                 );

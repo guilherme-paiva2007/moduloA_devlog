@@ -13,7 +13,7 @@ class ActivesList extends StatefulWidget {
 }
 
 class _ActivesListState extends State<ActivesList> {
-  late final Future<Result<List<Active>, Warning>> actives;
+  late Future<Result<List<Active>, Warning>> actives;
 
   @override
   void initState() {
@@ -68,7 +68,35 @@ class _ActivesListState extends State<ActivesList> {
                     return ListTile(
                       title: Text(active.name),
                       subtitle: Text(active.description ?? ""),
-                      trailing: Text(active.category),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(active.category),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () async {
+                              await Active.service.remove(active.$id);
+                              setState(() {
+                                this.actives = Active.service.list();
+                              });
+                            },
+                          ),
+                           IconButton(
+                             icon: const Icon(Icons.add_circle, color: Colors.blue),
+                             tooltip: "Adicionar manutenção",
+                             onPressed: () {
+                               context.push("/ativos/${active.$id}/maintances/adicionar", extra: active);
+                             },
+                           ),
+                           IconButton(
+                             icon: const Icon(Icons.list, color: Colors.green),
+                             tooltip: "Listar manutenções",
+                             onPressed: () {
+                               context.push("/ativos/${active.$id}/maintances/listar", extra: active);
+                             },
+                           ),
+                        ],
+                      ),
                     );
                   },
                 );

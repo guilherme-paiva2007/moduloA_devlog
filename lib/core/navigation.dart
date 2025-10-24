@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:modulo_a_devlog/screens/actives/add.dart';
 import 'package:modulo_a_devlog/screens/actives/details.dart';
 import 'package:modulo_a_devlog/screens/actives/list.dart';
+import 'package:modulo_a_devlog/screens/maintances/add.dart';
+import 'package:modulo_a_devlog/screens/maintances/list.dart';
 import 'package:modulo_a_devlog/screens/actives/maintance_add.dart';
 import 'package:modulo_a_devlog/screens/actives/maintance_details.dart';
 import 'package:modulo_a_devlog/screens/actives/maintances.dart';

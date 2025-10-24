@@ -15,7 +15,7 @@ class AdminsList extends StatefulWidget {
 }
 
 class _AdminsListState extends State<AdminsList> {
-  late final Future<Result<List<Admin>, Warning>> admins;
+  late Future<Result<List<Admin>, Warning>> admins;
 
   @override
   void initState() {
@@ -70,6 +70,15 @@ class _AdminsListState extends State<AdminsList> {
                     return ListTile(
                       title: Text(admin.name),
                       subtitle: Text(admin.email),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          await Admin.service.remove(admin.$id);
+                          setState(() {
+                            this.admins = Admin.service.list();
+                          });
+                        },
+                      ),
                     );
                   },
                 );

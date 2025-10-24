@@ -53,16 +53,18 @@ abstract final class AppRoutes {
             ),
           ),
           activesMaintances = AppRoute(
-            parts: ":id/manutencoes",
-            builder: (context, state) => ActiveMaintancesList(
-              // id: state.pathParameters["id"]!,
-            ),
+            parts: ":id/maintances/listar",
+            builder: (context, state) {
+              final active = state.extra;
+              return MaintanceListScreen(activeId: int.tryParse(state.pathParameters["id"] ?? "0") ?? 0);
+            },
           ),
           activesMaintanceAdd = AppRoute(
-            parts: ":id/manuntencoes/adicionar",
-            builder: (context, state) => ActiveMaintanceAdd(
-              // id: state.pathParameters["id"]!,
-            ),
+            parts: ":id/maintances/adicionar",
+            builder: (context, state) {
+              final active = state.extra;
+              return MaintanceAddScreen(activeId: state.pathParameters["id"] ?? "0");
+            },
           ),
           activesMaintanceDetails = AppRoute(
             parts: ":active_id/manutencoes/:maintance_id",

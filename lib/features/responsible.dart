@@ -1,7 +1,21 @@
+	// ...existing code...
+
 import 'package:dart_tools/tools.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final class ResponsibleService extends Service<Responsible> {
+  Future<void> remove(Id id) async {
+		try {
+			await Supabase.instance.client
+				.from("responsibles")
+				.delete()
+				.eq("id", id.toString());
+			Responsible.repository.remove(Responsible.repository.get(id)!);
+		} catch (err) {
+			print(err);
+		}
+	}
+
 	Future<Result<List<Responsible>, Warning>> list() async {
 		try {
 			final query = await Supabase.instance.client
@@ -65,7 +79,7 @@ final class ResponsibleService extends Service<Responsible> {
 					.eq("id", id.toString())
 					.single();
 				final responsible = Responsible(
-					PartId([query['id'] as String]),
+					PartId([query['id'] as int ]),
 					name: query['name'] as String,
 					description: query['description'] as String?,
 					sector: query['sector'] as String
@@ -73,6 +87,7 @@ final class ResponsibleService extends Service<Responsible> {
 				addInRepositories(responsible);
 				return Success(responsible);
 			} catch (err) {
+        print(err);
 				return Failure(Warning(ResponsibleWarning.registerError, err.toString()));
 			}
 		}
