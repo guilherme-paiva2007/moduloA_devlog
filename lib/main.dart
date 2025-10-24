@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modulo_a_devlog/core/constants/colors.dart';
 import 'package:modulo_a_devlog/core/navigation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -25,7 +26,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: ThemeData(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blue),
+      ),
       routerConfig:
         router?.router ??
         (router = AppRoutes.createRouter(Supabase.instance.client.auth.currentSession != null)).router,

@@ -30,7 +30,7 @@ abstract final class AppStyles {
 abstract final class AppBorders {
   static const underline = BorderSide(
     width: 2,
-    color: Colors.green,
+    color: AppColors.blue,
   );
   static const underlineRed = BorderSide(
     width: 2,
@@ -106,7 +106,7 @@ Widget _buttonBackgroundBuilder(BuildContext context, Set<WidgetState> states, W
     ),
     child: DefaultTextStyle(
       style: buttonStylable?.defaultTextStyle.copyWith(
-        color: buttonStylable.foregroundColor,
+        color: Colors.white,
       ) ?? const TextStyle(
         color: AppBaseColor.s50,
       ),

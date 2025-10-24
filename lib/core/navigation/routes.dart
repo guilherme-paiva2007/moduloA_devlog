@@ -42,15 +42,15 @@ abstract final class AppRoutes {
         icon: FontAwesomeIcons.list,
         showOnDrawer: true,
         subroutes: [
+          activesAdd = AppRoute(
+            parts: "adicionar",
+            builder: (context, state) => const ActiveAdd(),
+          ),
           activesDetails = AppRoute(
             parts: ":id",
             builder: (context, state) => ActiveDetails(
               // id: state.pathParameters["id"]!,
             ),
-          ),
-          activesAdd = AppRoute(
-            parts: "adicionar",
-            builder: (context, state) => const ActiveAdd(),
           ),
           activesMaintances = AppRoute(
             parts: ":id/manutencoes",
@@ -74,21 +74,21 @@ abstract final class AppRoutes {
         ]
       ),
       adminsList = AppRoute(
-        parts: "administradores",
+        parts: "admins",
         builder: (context, state) => const AdminsList(),
         displayName: "Admins",
         icon: FontAwesomeIcons.userLock,
         showOnDrawer: true,
         subroutes: [
+          adminsAdd = AppRoute(
+            parts: "adicionar",
+            builder: (context, state) => const AdminAdd(),
+          ),
           adminsDetails = AppRoute(
             parts: ":id",
             builder: (context, state) => AdminDetails(
               // id: state.pathParameters["id"]!,
             ),
-          ),
-          adminsAdd = AppRoute(
-            parts: "adicionar",
-            builder: (context, state) => const AdminAdd(),
           ),
         ]
       ),
@@ -99,15 +99,15 @@ abstract final class AppRoutes {
         icon: FontAwesomeIcons.bell,
         showOnDrawer: true,
         subroutes: [
+          alertsAdd = AppRoute(
+            parts: "adicionar",
+            builder: (context, state) => const AlertAdd(),
+          ),
           alertsDetails = AppRoute(
             parts: ":id",
             builder: (context, state) => AlertDetails(
               // id: state.pathParameters["id"]!,
             ),
-          ),
-          alertsAdd = AppRoute(
-            parts: "adicionar",
-            builder: (context, state) => const AlertAdd(),
           ),
         ]
       ),
@@ -118,15 +118,15 @@ abstract final class AppRoutes {
         icon: FontAwesomeIcons.paperPlane,
         showOnDrawer: true,
         subroutes: [
+          responsiblesAdd = AppRoute(
+            parts: "adicionar",
+            builder: (context, state) => const ResponsibleAdd(),
+          ),
           responsiblesDetails = AppRoute(
             parts: ":id",
             builder: (context, state) => ResponsibleDetails(
               // id: state.pathParameters["id"]!,
             ),
-          ),
-          responsiblesAdd = AppRoute(
-            parts: "adicionar",
-            builder: (context, state) => const ResponsibleAdd(),
           ),
         ]
       ),

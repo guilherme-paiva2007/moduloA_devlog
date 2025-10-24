@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modulo_a_devlog/core/constants/sizes.dart';
 import 'package:modulo_a_devlog/core/navigation.dart';
+import 'package:modulo_a_devlog/features/admin.dart';
 import 'package:modulo_a_devlog/main.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -39,7 +40,7 @@ class AppDrawer extends StatelessWidget {
                     spacing: 8,
                     children: [
                       const FaIcon(FontAwesomeIcons.user),
-                      Text("Nome do usuário")
+                      Text(Admin.service.currentAuth?.name ?? "Nome do usuário")
                     ],
                   ),
                   IconButton(

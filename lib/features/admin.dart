@@ -2,8 +2,8 @@ import 'package:dart_tools/tools.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final class Admin extends Model<Admin> {
-  final String email;
-  final String name;
+  String email;
+  String name;
 
   Admin(super.$id, {
     required this.email,
@@ -38,12 +38,34 @@ final class AdminUpdate extends ModelUpdate<Admin> {
   
   @override
   Result<Admin, Warning<WarningCode>> changeData(Admin instance) {
-    // TODO: implement changeData
-    throw UnimplementedError();
+    if (email != null) {
+      instance.email = email!;
+    }
+    if (name != null) {
+      instance.name = name!;
+    }
+    return Success(instance);
   }
 }
 
 final class AdminService extends Service<Admin> {
+  Future<Result<List<Admin>, Warning>> list() async {
+    try {
+      final query = await Supabase.instance.client
+        .from("admins")
+        .select();
+      final admins = (query as List)
+        .map((data) => Admin(
+          PartId([data['auth'] as String]),
+          email: data['email'] as String,
+          name: data['name'] as String
+        ))
+        .toList();
+      return Success(admins);
+    } catch (err) {
+      return Failure(Warning(AdminWarning.registerError, err.toString()));
+    }
+  }
   AdminService._();
 
   Admin? _currentAuth;
@@ -53,20 +75,32 @@ final class AdminService extends Service<Admin> {
     required String email,
     required String password,
   }) async {
-    final result = await Supabase.instance.client.auth.signInWithPassword(
-      email: email,
-      password: password
-    );
-
-    if (result.session != null && result.user != null) {
-      return Success(
-        _currentAuth = Admin(
-          PartId([result.user!.aud]),
-          email: email,
-          name: result.user!.userMetadata?['display_name'] as String? ?? "Usuário sem nome"
-        )
+    try {
+      final result = await Supabase.instance.client.auth.signInWithPassword(
+        email: email,
+        password: password
       );
-    } else {
+      if (result.session == null || result.user == null) {
+        return Failure(Warning(AdminWarning.loginError, "Sessão inválida"));
+      }
+
+      final query = await Supabase.instance.client
+        .from("admins")
+        .select()
+        .eq("auth", result.user!.id)
+        .single();
+
+      _currentAuth = Admin(
+        PartId([result.user!.aud]),
+        email: query['email'] as String,
+        name: query['name'] as String
+      );
+
+      addInRepositories(_currentAuth!);
+
+      return Success(_currentAuth!);
+    } catch (err) {
+      print(err);
       return Failure(Warning(AdminWarning.loginError));
     }
   }
@@ -89,17 +123,25 @@ final class AdminService extends Service<Admin> {
       }
     );
 
-    if (result.user != null) {
-      return Success(
-        Admin(
-          PartId([result.user!.aud]),
-          email: email,
-          name: name
-        )
-      );
-    } else {
+    if (result.user == null) {
       return Failure(Warning(AdminWarning.registerError));
     }
+
+    await Supabase.instance.client
+      .from("admins")
+      .insert({
+        'auth': result.user!.id,
+        'email': email,
+        'name': name
+      });
+    
+    return Success(
+      Admin(
+        PartId([result.user!.aud]),
+        email: email,
+        name: name
+      )
+    );
   }
 
   Future<Result<AdminUpdate, Warning>> update({ String? name, String? email, String? password }) async {
@@ -118,6 +160,13 @@ final class AdminService extends Service<Admin> {
       )
     );
 
+    Supabase.instance.client.from("admins")
+      .update({
+        if (name != null) 'name': name,
+        if (email != null) 'email': email
+      })
+      .eq('auth', user.id);
+
     if (result.user != null) {
       final adminUpdate = AdminUpdate(
         PartId([result.user!.aud]),
@@ -129,5 +178,30 @@ final class AdminService extends Service<Admin> {
     } else {
       return Failure(Warning(AdminWarning.loginError));
     }
+  }
+
+  Future<Result<Admin, Warning>> get(Id id) async {
+    for (var repo in repositories) {
+      final admin = repo.get(id);
+      if (admin != null) {
+        return Success(admin);
+      }
+    }
+
+    final query = await Supabase.instance.client
+      .from("admins")
+      .select()
+      .eq("auth", id.toString())
+      .single();
+    
+    final admin = Admin(
+      PartId([query['auth'] as String]),
+      email: query['email'] as String,
+      name: query['name'] as String
+    );
+
+    addInRepositories(admin);
+
+    return Success(admin);
   }
 }

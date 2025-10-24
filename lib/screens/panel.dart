@@ -1,8 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modulo_a_devlog/core/constants.dart';
 import 'package:modulo_a_devlog/core/navigation.dart';
+import 'package:modulo_a_devlog/features/admin.dart';
 import 'package:modulo_a_devlog/widgets/drawer.dart';
 import 'package:modulo_a_devlog/widgets/scaffold.dart';
 
@@ -16,74 +18,70 @@ class Panel extends StatefulWidget {
 class _PanelState extends State<Panel> {
   @override
   Widget build(BuildContext context) {
+    if (Admin.service.currentAuth == null) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        context.go("/entrar");
+      },);
+    }
+
     return AppScaffold(
       title: "Painel administrativo",
-      body: SafeArea(
-        left: false,
+      body: Expanded(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (MediaQuery.of(context).size.width > 1300) AppDrawer(),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    constraints: const BoxConstraints(
-                      maxWidth: 1200
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MediaQuery.of(context).size.width < 700 ? MainAxisAlignment.start : MainAxisAlignment.center,
-                        spacing: 24,
-                        children: [
-                          SizedBox(
-                            height: 400,
-                            child: LineChart(
-                              LineChartData(
-                                lineBarsData: [
-                                  LineChartBarData(
-                                    spots: [
-                                      FlSpot(0, 1),
-                                      FlSpot(1, 3),
-                                      FlSpot(2, 7),
-                                      FlSpot(3, 4),
-                                      FlSpot(4, 5),
-                                      FlSpot(5, 3),
-                                      FlSpot(6, 4),
-                                    ]
-                                  )
-                                ]
-                              )
+            Container(
+              constraints: const BoxConstraints(
+                maxWidth: 1200
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 700 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                  spacing: 24,
+                  children: [
+                    SizedBox(
+                      height: 400,
+                      child: LineChart(
+                        LineChartData(
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: [
+                                FlSpot(0, 1),
+                                FlSpot(1, 3),
+                                FlSpot(2, 7),
+                                FlSpot(3, 4),
+                                FlSpot(4, 5),
+                                FlSpot(5, 3),
+                                FlSpot(6, 4),
+                              ]
                             )
-                          ),
-                          Row(
-                            
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            spacing: 8,
-                            
-                            
-                          ),
-                          Wrap(
-                            direction: Axis.horizontal,
-                            spacing: 8,
-                            children: [
-                              LocationCard(AppRoutes.activesList),
-                              LocationCard(AppRoutes.adminsList),
-                              LocationCard(AppRoutes.alertsList),
-                              LocationCard(AppRoutes.responsiblesList),
-                            ],
-                          )
-                        ],
-                      ),
+                          ]
+                        )
+                      )
                     ),
-                  ),
-                ],
+                    Row(
+                      
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      spacing: 8,
+                      
+                      
+                    ),
+                    Wrap(
+                      direction: Axis.horizontal,
+                      spacing: 8,
+                      children: [
+                        LocationCard(AppRoutes.activesList),
+                        LocationCard(AppRoutes.adminsList),
+                        LocationCard(AppRoutes.alertsList),
+                        LocationCard(AppRoutes.responsiblesList),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],

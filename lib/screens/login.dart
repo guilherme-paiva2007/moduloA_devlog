@@ -1,8 +1,10 @@
+import 'package:dart_tools/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/form_validator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modulo_a_devlog/core/constants.dart';
+import 'package:modulo_a_devlog/features/admin.dart';
 import 'package:modulo_a_devlog/widgets/button.dart';
 import 'package:modulo_a_devlog/widgets/text_field.dart';
 
@@ -17,6 +19,31 @@ class _LoginState extends State<Login> {
   final emailController = InputEdittingController<String>("");
   final passwordController = InputEdittingController<String>("");
   final secret = InputSecretController();
+
+  void login() async {
+    final result = await Admin.service.login(
+      email: emailController.value,
+      password: passwordController.value
+    );
+
+    if (result is Failure<Admin, Warning>) {
+      print(result);
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: const Text("Erro ao entrar"),
+            contentPadding: const EdgeInsets.all(16),
+            children: [
+              Text(result.failure.code.explanation)
+            ],
+          ),
+        );
+      }
+    } else {
+      if (mounted) context.go("/painel");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +131,7 @@ class _LoginState extends State<Login> {
                                   ),
                                   AppButton(
                                     onPressed: () {
-                                      context.go("/painel");
+                                      login();
                                     },
                                     color: axis == Axis.horizontal ? Colors.white : AppColors.blue,
                                     child: const Text("Entrar"),

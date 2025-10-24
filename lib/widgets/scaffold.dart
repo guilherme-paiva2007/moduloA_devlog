@@ -27,7 +27,14 @@ class AppScaffold extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: body,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (MediaQuery.of(context).size.width > 1300) AppDrawer(),
+            Expanded(child: body),
+          ],
+        ),
       ),
       floatingActionButton: floatingActionButton,
     );
