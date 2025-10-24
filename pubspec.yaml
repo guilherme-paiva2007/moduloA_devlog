@@ -1,0 +1,32 @@
+name: modulo_a_devlog
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.4
+  font_awesome_flutter: ^10.12.0
+  go_router: ^16.3.0
+  dart_tools:
+    path: packages/flutter_tools/packages/dart_tools
+  flutter_tools:
+    path: packages/flutter_tools
+  supabase_flutter: ^2.10.3
+  flutter_web_plugins:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
