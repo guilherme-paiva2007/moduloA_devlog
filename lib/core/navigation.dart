@@ -1,7 +1,25 @@
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modulo_a_devlog/screens/actives/add.dart';
+import 'package:modulo_a_devlog/screens/actives/details.dart';
+import 'package:modulo_a_devlog/screens/actives/list.dart';
+import 'package:modulo_a_devlog/screens/actives/maintance_add.dart';
+import 'package:modulo_a_devlog/screens/actives/maintance_details.dart';
+import 'package:modulo_a_devlog/screens/actives/maintances.dart';
+import 'package:modulo_a_devlog/screens/admins/add.dart';
+import 'package:modulo_a_devlog/screens/admins/details.dart';
+import 'package:modulo_a_devlog/screens/admins/list.dart';
+import 'package:modulo_a_devlog/screens/ai/assistant.dart';
+import 'package:modulo_a_devlog/screens/ai/maintance_preview.dart';
+import 'package:modulo_a_devlog/screens/alerts/add.dart';
+import 'package:modulo_a_devlog/screens/alerts/details.dart';
+import 'package:modulo_a_devlog/screens/alerts/list.dart';
 import 'package:modulo_a_devlog/screens/login.dart';
 import 'package:modulo_a_devlog/screens/panel.dart';
+import 'package:modulo_a_devlog/screens/responsibles/add.dart';
+import 'package:modulo_a_devlog/screens/responsibles/details.dart';
+import 'package:modulo_a_devlog/screens/responsibles/list.dart';
 
 part 'navigation/routes.dart';
 part 'navigation/navigator.dart';

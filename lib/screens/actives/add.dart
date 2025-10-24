@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:modulo_a_devlog/widgets/scaffold.dart';
 
-class AiAnalysis extends StatefulWidget {
-  const AiAnalysis({super.key});
+class ActiveAdd extends StatefulWidget {
+  const ActiveAdd({super.key});
 
   @override
-  State<AiAnalysis> createState() => _AiAnalysisState();
+  State<ActiveAdd> createState() => _ActiveAddState();
 }
 
-class _AiAnalysisState extends State<AiAnalysis> {
+class _ActiveAddState extends State<ActiveAdd> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(

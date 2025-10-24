@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/form_validator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modulo_a_devlog/core/constants.dart';
 import 'package:modulo_a_devlog/widgets/button.dart';
 import 'package:modulo_a_devlog/widgets/text_field.dart';
@@ -88,7 +89,7 @@ class _LoginState extends State<Login> {
                                     controller: emailController,
                                     border: const BorderSide(color: Colors.white, width: 2),
                                     textStyle: TextStyle(
-                                      color: axis == Axis.horizontal ? Colors.white : AppColors.base
+                                      color: axis == Axis.horizontal ? Colors.white : AppColors.base,
                                     ),
                                   ),
                                   AppTextInput(
@@ -103,7 +104,7 @@ class _LoginState extends State<Login> {
                                   ),
                                   AppButton(
                                     onPressed: () {
-                                      
+                                      context.go("/painel");
                                     },
                                     color: axis == Axis.horizontal ? Colors.white : AppColors.blue,
                                     child: const Text("Entrar"),

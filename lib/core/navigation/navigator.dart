@@ -59,6 +59,7 @@ final class AppRouter {
           GoRoute(
             path: route.path,
             redirect: (context, state) => route._redirection!,
+            name: route.name
           ),
         );
       } else if (route.builder != null) {
@@ -81,6 +82,11 @@ final class AppRoute {
   final List<AppRoute> subroutes;
   final Widget Function(BuildContext context, GoRouterState state)? builder;
 
+  final String? name;
+  final String? displayName;
+  final IconData? icon;
+  final bool showOnDrawer;
+
   late final String path;
   late final AppRouter router;
   bool _hasRouter = false;
@@ -92,11 +98,13 @@ final class AppRoute {
     required String parts,
     required Widget Function(BuildContext context, GoRouterState state) this.builder,
     this.subroutes = const [],
+    this.name, this.displayName, this.icon, this.showOnDrawer = false
   }): parts = parts.split("/"), redirect = false, _redirection = null;
 
   AppRoute.dir({
     required String parts,
     required this.subroutes,
+    this.name, this.displayName, this.icon, this.showOnDrawer = false
   }): builder = null, parts = parts.split("/"), redirect = false, _redirection = null {
     if (subroutes.isEmpty) {
       throw Exception("Directory routes must have at least one subroute");
@@ -106,6 +114,7 @@ final class AppRoute {
   AppRoute.redirect({
     required String parts,
     required String target,
+    this.name, this.displayName, this.icon, this.showOnDrawer = false
   }): builder = null, parts = parts.split("/"), redirect = true, subroutes = const [], _redirection = target;
 
   void go(BuildContext context, [Map<String, String> params = const {}]) {

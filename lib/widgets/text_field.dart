@@ -46,6 +46,7 @@ class AppTextInput extends StatelessWidget {
           },
           textAlignVertical: TextAlignVertical.center,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          cursorColor: textStyle?.color,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: AppStyles.label.copyWith(

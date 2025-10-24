@@ -3,6 +3,8 @@ import 'package:modulo_a_devlog/core/navigation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
+AppRouter? router;
+
 void main() async {
   usePathUrlStrategy();
 
@@ -24,7 +26,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(),
-      routerConfig: createRouter(Supabase.instance.client.auth.currentSession != null).router,
+      routerConfig:
+        router?.router ??
+        (router = AppRoutes.createRouter(Supabase.instance.client.auth.currentSession != null)).router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
