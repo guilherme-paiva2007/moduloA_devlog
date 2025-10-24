@@ -31,6 +31,11 @@ Isso iniciará um servidor HTTP no localhost na porta `8080`.
 
 Em qualquer navegador, acesse `http://localhost:8080` para navegar ao diretório padrão da aplicação.
 
+#### 4. Senha de administrador
+
+liliv@gmail.com
+admin123
+
 ### Modo de Desenvolvimento
 
 A inicialização em modo de desenvolvimento permite usar as ferramentas de debug de Flutter, mas requer mais passos e instalações para utilizar.
